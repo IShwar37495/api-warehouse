@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
     public function allApis(): JsonResponse{
-        
+
       try{
         $apis=Api::paginate(10);
 
@@ -34,4 +34,24 @@ class ApiController extends Controller
 
 
     }
+
+public function indianStates(Request $request)
+    {
+        try {
+            $states = [
+                "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+                "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+                "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+                "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+                "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+            ];
+
+            return ApiResponse::success($states, "List of Indian States");
+
+        } catch (Exception $e) {
+            return ApiResponse::error("Something went wrong", 500, ['error' => $e->getMessage()]);
+        }
+    }
+
+
 }

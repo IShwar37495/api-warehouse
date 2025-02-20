@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Models\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,4 +16,15 @@ foreach ($apis as $api) {
         return response()->json(json_decode($api->response, true));
     })->name('admin.' . str_replace('/', '.', trim($api->endpoint, '/')));
 }
+
+
+
+Route::middleware(['auth:sanctum'])->prefix('/v1')->group(function(){
+
+    Route::get('/indian-states', [ApiController::class, "indianStates"])->name('api.indianStates');
+
+});
+
+
+
 
