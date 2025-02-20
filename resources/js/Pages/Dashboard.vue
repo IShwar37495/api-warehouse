@@ -1,24 +1,38 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from "@/Layouts/AppLayout.vue";
+import Footer from "@/Layouts/Footer.vue";
 </script>
 
 <template>
     <AppLayout title="API Dashboard">
-        <template #header>
-            <h2 class="font-bold text-3xl text-orange-500 dark:text-orange-400 leading-tight text-center">
-                Welcome to the API Dashboard
-            </h2>
-        </template>
+        <h2
+            class="text-3xl font-bold leading-tight text-center text-orange-500 dark:text-orange-400"
+        >
+            POPULAR API'S
+        </h2>
 
-        <div class="py-12 bg-gradient-to-br from-orange-100 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-wrap justify-center gap-8">
+        <div
+            class="min-h-screen py-12 bg-gradient-to-br from-orange-100 to-white dark:from-gray-900 dark:to-gray-800"
+        >
+            <div
+                class="flex flex-wrap justify-center gap-8 mx-auto max-w-7xl sm:px-6 lg:px-8"
+            >
                 <div class="api-card" v-for="api in apis" :key="api.name">
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ api.name }}</h3>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">{{ api.description }}</p>
+                    <a
+                        href="https://www.google.com"
+                        class="text-xl font-semibold text-gray-800 dark:text-black"
+                    >
+                        {{ api.name }}
+                    </a>
+                    <p class="mt-2 text-gray-600 dark:text-black">
+                        {{ api.description }}
+                    </p>
                 </div>
             </div>
         </div>
     </AppLayout>
+
+    <Footer />
 </template>
 
 <script>
@@ -26,13 +40,75 @@ export default {
     data() {
         return {
             apis: [
-                { name: 'User Authentication API', description: 'Secure user authentication and authorization.' },
-                { name: 'Real-Time Data API', description: 'Fetch and push real-time updates effortlessly.' },
-                { name: 'Payment Gateway API', description: 'Process online transactions seamlessly.' },
-                { name: 'Weather Forecast API', description: 'Get the latest weather updates and forecasts.' }
-            ]
+                {
+                    name: "User Authentication API",
+                    description:
+                        "Secure user authentication and authorization.",
+                },
+                {
+                    name: "Real-Time Data API",
+                    description:
+                        "Fetch and push real-time updates effortlessly.",
+                },
+                {
+                    name: "Payment Gateway API",
+                    description: "Process online transactions seamlessly.",
+                },
+                {
+                    name: "Weather Forecast API",
+                    description:
+                        "Get the latest weather updates and forecasts.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+                {
+                    name: "States of India",
+                    description: "Get the all states of india.",
+                },
+            ],
         };
-    }
+    },
 };
 </script>
 

@@ -8,4 +8,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Route::get('/create-api', function(Request $request){
+   return "Api Created";
+})->name('create-api');
+
+
 

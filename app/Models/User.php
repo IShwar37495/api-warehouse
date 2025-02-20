@@ -64,4 +64,27 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // public function createToken(string $name, array $abilities = ['read'])
+    // {
+    //     return parent::createToken($name, $abilities);
+    // }
+
+
+public function roles()
+{
+    return $this->belongsToMany(Role::class, 'user_role');
+}
+
+
+
+  public function assignRole($role)
+{
+    $role = strtolower($role);
+    $role = Role::where('name', $role)->first();
+    if ($role) {
+        $this->roles()->attach($role->id);
+    }
+}
+
 }
