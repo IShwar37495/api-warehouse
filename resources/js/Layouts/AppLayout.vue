@@ -58,7 +58,7 @@ onMounted(() => {
                             <div class="hidden space-x-1 sm:flex">
                                 <NavLink
                                     v-if="$page.props.auth.user?.isAdmin"
-                                    :href="route('create-api')"
+                                    :href="route('admin.api.create')"
                                     class="px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                                     active-class="text-[#FE4D01] dark:text-[#FE4D01]"
                                 >

@@ -1,3 +1,10 @@
+
+<script setup>
+import { usePage } from '@inertiajs/vue3';
+
+usePage().props.title = "API Warehouse - Free APIs for Developers";
+</script>
+
 <template>
     <main :class="{ dark: isDark }">
         <!-- Updated Navbar Component -->

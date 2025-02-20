@@ -20,13 +20,13 @@ class DatabaseSeeder extends Seeder
 
     //   Api::factory(10)->create();
 
-    //  Role::create([
-    //     'name'=>'Admin'
-    //   ]);
+     Role::create([
+        'name'=>'Admin'
+      ]);
 
-    //   Role::create([
-    //     'name'=>'User'
-    //   ]);
+      Role::create([
+        'name'=>'User'
+      ]);
 
 
      $user= User::create([
@@ -36,6 +36,8 @@ class DatabaseSeeder extends Seeder
         'email_verified_at'=>now(),
 
       ]);
+
+    $token = $user->createToken('Admin Token')->plainTextToken;
 
       $user->assignRole('admin');
 

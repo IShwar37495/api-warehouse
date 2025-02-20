@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,18 @@ Route::middleware([
     })->name('dashboard');
 });
 
-//auth views
+
+//admin routes-->
+
+Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function(){
+
+ Route::get('/create-api', [AdminController::class, 'createApi'])->name('api.create');
+
+ Route::post('/store-api', [AdminController::class,'storeApi'])->name('api.store');
+
+});
+
+
 
 
 
