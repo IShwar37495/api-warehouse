@@ -21,8 +21,9 @@ export default defineConfig({
     // Add this server configuration
     server: {
         https: true,
+        host: "0.0.0.0", // Ensure the server is accessible externally
+        port: 3000, // You can specify a port if needed
     },
-
     // Force assets to use HTTPS
     build: {
         rollupOptions: {
@@ -34,5 +35,7 @@ export default defineConfig({
                 entryFileNames: "assets/[name]-[hash].js",
             },
         },
+        // Ensure the base URL is set to your production URL
+        base: "https://api-warehouse-production-6639.up.railway.app/",
     },
 });
