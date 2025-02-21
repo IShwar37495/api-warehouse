@@ -6,7 +6,6 @@ export default defineConfig({
     plugins: [
         laravel({
             input: "resources/js/app.js",
-
             refresh: true,
         }),
         vue({
@@ -18,4 +17,20 @@ export default defineConfig({
             },
         }),
     ],
+    // Add this server configuration
+    server: {
+        https: true,
+    },
+    // Force assets to use HTTPS
+    build: {
+        rollupOptions: {
+            output: {
+                assetFileNames: (assetInfo) => {
+                    return `assets/[name]-[hash][extname]`;
+                },
+                chunkFileNames: "assets/[name]-[hash].js",
+                entryFileNames: "assets/[name]-[hash].js",
+            },
+        },
+    },
 });
