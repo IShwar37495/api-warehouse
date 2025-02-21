@@ -14,8 +14,7 @@
 
     <!-- Scripts -->
     @routes
-    @vite([secure_asset('resources/js/app.js'), secure_asset("resources/js/Pages/{$page['component']}.vue")])
-
+    @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
     @inertiaHead
 </head>
 
