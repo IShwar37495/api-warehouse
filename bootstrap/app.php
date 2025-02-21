@@ -2,7 +2,10 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Support\Facades\URL;
+// Force HTTPS in production
+if (env('APP_ENV') === 'production') {
+    \Illuminate\Support\Facades\URL::forceScheme('https');
+}
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -19,10 +22,4 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })
-    ->withBootstrap(function (Application $app) {
-        if (env('APP_ENV') === 'production') {
-            URL::forceScheme('https');
-        }
-    })
-    ->create();
+    })->create();
