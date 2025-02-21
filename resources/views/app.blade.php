@@ -14,7 +14,10 @@
 
     <!-- Scripts -->
     @routes
-    @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+    {{-- @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"]) --}}
+
+    @vite(['https://api-warehouse-production-6639.up.railway.app/resources/js/app.js', "https://api-warehouse-production-6639.up.railway.app/resources/js/Pages/{$page['component']}.vue"])
+
     @inertiaHead
 </head>
 
