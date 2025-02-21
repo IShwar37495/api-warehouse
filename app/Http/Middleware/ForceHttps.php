@@ -8,17 +8,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ForceHttps
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-       if (!$request->secure() && app()->environment('production')) {
+        // Only force HTTPS if the request is NOT already secure
+        if (!$request->secure() && !$this->isBehindTrustedProxy($request) && app()->environment('production')) {
             return redirect()->secure($request->getRequestUri());
         }
 
         return $next($request);
     }
+
+    private function isBehindTrustedProxy(Request $request): bool
+    {
+        // Check for Railway or other proxy headers
+        return $request->header('X-Forwarded-Proto') === 'https';
+    }
 }
+
