@@ -18,13 +18,13 @@ export default defineConfig({
             },
         }),
     ],
-    // Add base URL configuration
-    base: process.env.APP_URL ? `${process.env.APP_URL}/` : "/",
+    // Add this server configuration
+    server: {
+        https: true,
+    },
 
-    // Remove server configuration (only for development)
-    // Keep build configuration as is or modify like this:
+    // Force assets to use HTTPS
     build: {
-        manifest: true,
         rollupOptions: {
             output: {
                 assetFileNames: (assetInfo) => {
