@@ -63,49 +63,6 @@ export default {
                     name: "States of India",
                     description: "Get the all states of india.",
                 },
-
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
-                {
-                    name: "States of India",
-                    description: "Get the all states of india.",
-                },
             ],
         };
     },

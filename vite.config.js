@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 
+const isProduction = process.env.APP_ENV === "production";
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -18,9 +20,8 @@ export default defineConfig({
             },
         }),
     ],
-    // Add this server configuration
     server: {
-        https: true,
+        https: isProduction,
     },
 
     // Force assets to use HTTPS
