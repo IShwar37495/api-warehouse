@@ -39,7 +39,7 @@ const submit = () => {
             <img
                 src="/images/image.png"
                 alt="API Warehouse Logo"
-                class="w-auto h-16 mx-auto"
+                class="object-contain w-32 h-24"
             />
         </template>
 
@@ -104,7 +104,7 @@ const submit = () => {
             </div>
 
             <PrimaryButton
-                class="w-full px-4 py-2 text-white transition-all bg-orange-500 rounded-lg hover:bg-orange-600 dark:bg-orange-400 dark:hover:bg-orange-500 dark:text-black"
+                class="w-full px-4 py-2 text-white transition-all bg-orange-600 rounded-lg hover:bg-orange-500 dark:bg-orange-400 dark:hover:bg-orange-500 dark:text-black"
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
             >

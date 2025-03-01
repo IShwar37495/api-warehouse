@@ -7,6 +7,7 @@ use App\Models\Api;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ApiController extends Controller
 {
@@ -53,5 +54,37 @@ public function indianStates(Request $request)
         }
     }
 
+
+
+    // Api for fetching all countries
+
+
+    public function allCountries(){
+
+        try{
+            $response=Http::get('https://restcountries.com/v3.1/all');
+            $countries=$response->json();
+
+                    $formattedCountries = collect($countries)->map(function ($country) {
+                    return [
+                        'name' => $country['name']['common'],
+                        'official_name' => $country['name']['official'],
+                        'code' => $country['cca2'] ?? null,
+                        'alpha3_code' => $country['cca3'] ?? null,
+                        'capital' => $country['capital'][0] ?? null,
+                        'region' => $country['region'] ?? null,
+                        'subregion' => $country['subregion'] ?? null,
+                        'population' => $country['population'] ?? null,
+                        'flag' => $country['flags']['png'] ?? null,
+                    ];
+                })->sortBy('name')->values()->all();
+
+
+                return ApiResponse::success($formattedCountries, "List of countries fetched successfully", 200);
+
+        }catch(Exception $e){
+            return ApiResponse::error("Failed to fetch countries", 500, ['error'=>$e->getMessage()]);
+        }
+    }
 
 }

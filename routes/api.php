@@ -23,6 +23,10 @@ Route::middleware(['auth:sanctum'])->prefix('/v1')->group(function(){
 
     Route::get('/indian-states', [ApiController::class, "indianStates"])->name('api.indianStates');
 
+
+
+    Route::get('/countries',[ApiController::class, "allCountries"])->name('api.allCountries');
+
 });
 
 
