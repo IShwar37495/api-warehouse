@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApiPageController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,17 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function(){
  Route::post('/store-api', [AdminController::class,'storeApi'])->name('api.store');
 
 });
+
+
+//accessing the apis demo page
+
+
+Route::middleware(['auth'])->prefix('api-page')->as('apiPage.')->group(function(){
+
+Route::get('/countries',[ApiPageController::class, "allcountriesApiPageDemo"])->name('countries');
+
+});
+
 
 
 

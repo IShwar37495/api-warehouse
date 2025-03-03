@@ -5,6 +5,12 @@ import { ref, onMounted } from "vue";
 
 const apis = ref([
     {
+        name: "All Countries API",
+        description: "Get all countries and their details.",
+        link: route("apiPage.countries"),
+        icon: "globe",
+    },
+    {
         name: "User Authentication API",
         description: "Secure user authentication and authorization.",
         link: "https://example.com/auth-api",
@@ -153,7 +159,7 @@ onMounted(() => {
                         v-for="(api, index) in apis"
                         :key="api.name"
                         :href="api.link"
-                        target="_blank"
+                        target="_self"
                         :class="['api-card', isVisible[index] ? 'visible' : '']"
                     >
                         <div
@@ -233,6 +239,22 @@ onMounted(() => {
                                     stroke-linejoin="round"
                                     stroke-width="2"
                                     d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                                />
+                            </svg>
+
+                            <svg
+                                v-else-if="api.icon === 'globe'"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="w-8 h-8"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 0c2.21 0 4-1.79 4-4m-4 4c-2.21 0-4-1.79-4-4m4 4c-1.1 0-2 .9-2 2m2-2c1.1 0 2 .9 2 2m-2 2c1.1 0 2 .9 2 2m-2-2c-1.1 0-2 .9-2 2m0 0c0 1.1.9 2 2 2m0 0c0 1.1-.9 2-2 2"
                                 />
                             </svg>
                         </div>
