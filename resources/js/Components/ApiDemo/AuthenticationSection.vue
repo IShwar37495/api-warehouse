@@ -37,16 +37,22 @@
                 class="relative p-6 bg-white border border-gray-200 dark:bg-gray-900 rounded-xl dark:border-gray-700"
             >
                 <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">
-                    API Request Header
+                    Simple Integration
                 </h3>
                 <div class="relative">
                     <pre
                         class="p-6 overflow-x-auto font-mono text-sm text-gray-900 bg-gray-100 rounded-lg dark:bg-gray-800 dark:text-gray-200"
                     >
-<code>// Include this header in all API requests
-{
-  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}</code>
+<code>
+fetch("https://api-warehouse-production-6639.up.railway.app/api/v1/countries", {
+    headers: {
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data)) // Handle the data as needed
+.catch(error => console.error("Error:", error));
+</code>
           </pre>
                     <button
                         @click="copyAuthHeader"

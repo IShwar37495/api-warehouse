@@ -84,34 +84,28 @@
                     <pre
                         class="p-6 overflow-x-auto font-mono text-sm text-gray-900 bg-gray-100 rounded-lg dark:bg-gray-800 dark:text-gray-200"
                     >
-<code>&lt;script setup&gt;
-import { ref, onMounted } from 'vue'
+<code>
+import { onMounted } from "vue";
 
-const countries = ref([])
-const selectedCountry = ref('')
+const fetchCountries = async () => {
+    try {
+        const response = await fetch("https://api-warehouse-production-6639.up.railway.app/api/v1/countries", {
+            headers: {
+                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            }
+        });
+        const data = await response.json();
+        console.log(data); // Handle the data as needed
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
 
-onMounted(async () => {
-  try {
-    const response = await fetch('https://api.example.com/countries', {
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`
-      }
-    })
-    countries.value = await response.json()
-  } catch (error) {
-    console.error('Error fetching countries:', error)
-  }
-})
-&lt;/script&gt;
-
-&lt;template&gt;
-  &lt;select v-model="selectedCountry" class="country-select" @change="(e) => setSelectedCountry(e.target.value)"&gt;
-    &lt;option value="" disabled&gt;Select Country&lt;/option&gt;
-    &lt;option v-for="country in countries" :value="country.code"&gt;
-      {{  }}
-    &lt;/option&gt;
-  &lt;/select&gt;
-&lt;/template&gt;</code>
+onMounted(fetchCountries);
+<template>
+    <div>Check the console for API response.</div>
+</template>
+</code>
           </pre>
                 </div>
             </div>
@@ -154,24 +148,20 @@ onMounted(async () => {
 <code>&lt;select id="countrySelect"&gt;&lt;/select&gt;
 
 &lt;script&gt;
-$(document).ready(function() {
-  $.ajax({
-    url: 'https://api.example.com/countries',
+$.ajax({
+    url: "https://api-warehouse-production-6639.up.railway.app/api/v1/countries",
+    method: "GET",
     headers: {
-      'Authorization': 'Bearer ' + bearerToken
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
     },
-    success: function(data) {
-      $.each(data, function(index, country) {
-        $('#countrySelect').append(
-          $('&lt;option&gt;', {
-            value: country.code,
-            text: country.name
-          })
-        )
-      })
+    success: function (data) {
+        console.log(data); // Use the data as needed
+    },
+    error: function (error) {
+        console.error("Error:", error);
     }
-  })
-})
+});
+
 &lt;/script&gt;</code>
           </pre>
                 </div>
@@ -212,38 +202,34 @@ $(document).ready(function() {
                     <pre
                         class="p-6 overflow-x-auto font-mono text-sm text-gray-900 bg-gray-100 rounded-lg dark:bg-gray-800 dark:text-gray-200"
                     >
-<code>import { useState, useEffect } from 'react'
+<code>
+    import { useEffect } from "react";
 
-function CountrySelector() {
-  const [countries, setCountries] = useState([])
-  const [selectedCountry, setSelectedCountry] = useState('')
+const fetchCountries = async () => {
+    try {
+        const response = await fetch("https://api-warehouse-production-6639.up.railway.app/api/v1/countries", {
+            headers: {
+                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            }
+        });
+        const data = await response.json();
+        console.log(data); // Handle the data as needed
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
 
-  useEffect(() => {
-    fetch('https://api.example.com/countries', {
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`
-      }
-    })
-    .then(response => response.json())
-    .then(data => setCountries(data))
-    .catch(error => console.error('Error fetching countries:', error))
-  }, [])
+const CountriesComponent = () => {
+    useEffect(() => {
+        fetchCountries();
+    }, []);
 
-  return (
-    &lt;select
-      value={selectedCountry}
-      onChange={(e) => setSelectedCountry(e.target.value)}
-      className="country-select"
-    &gt;
-      &lt;option value="" disabled&gt;Select Country&lt;/option&gt;
-      {countries.map(country => (
-        &lt;option key={country.code} value={country.code}&gt;
-          {country.name}
-        &lt;/option&gt;
-      ))}
-    &lt;/select&gt;
-  )
-}</code>
+    return <div>Check the console for API response.</div>;
+};
+
+export default CountriesComponent;
+
+</code>
           </pre>
                 </div>
             </div>
@@ -283,37 +269,62 @@ function CountrySelector() {
                     <pre
                         class="p-6 overflow-x-auto font-mono text-sm text-gray-900 bg-gray-100 rounded-lg dark:bg-gray-800 dark:text-gray-200"
                     >
-<code>const loadCountries = async () => {
-  try {
-    const response = await fetch('https://api.example.com/countries', {
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`
-      }
-    })
-    const countries = await response.json()
-    const select = document.getElementById('countrySelect')
+<code> const loadCountries = async () => {
+            try {
+                // Step 1: Fetch the countries from the API
+                const response = await fetch(
+                    "https://api-warehouse-production-6639.up.railway.app/api/v1/countries",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${bearerToken}`,
+                        },
+                    }
+                );
 
-    // Clear any existing options
-    select.innerHTML = '&lt;option value="" disabled selected&gt;Select Country&lt;/option&gt;'
+                const countriesData = await response.json();
+                const countries = countriesData.data; // Extract country data from response
 
-    countries.forEach(country => {
-      const option = document.createElement('option')
-      option.value = country.code
-      option.textContent = country.name
-      select.appendChild(option)
-    })
+                console.log(countries); // Debugging: Check API response in console
 
-    // Add event listener
-    select.addEventListener('change', (e) => {
-      console.log('Selected country:', e.target.value)
-    })
-  } catch (error) {
-    console.error('Error:', error)
-  }
-}
+                // Step 2: Find or create the select element
+                let select = document.getElementById("countrySelect");
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', loadCountries)</code>
+                if (!select) {
+                    // If the user has NOT created a select tag, create one dynamically
+                    select = document.createElement("select");
+                    select.id = "countrySelect"; // Set the ID so it can be referenced later
+
+                    // Optional: Add a label for better UI
+                    const label = document.createElement("label");
+                    label.setAttribute("for", "countrySelect");
+                    label.textContent = "Select Country:";
+                    document.body.appendChild(label);
+                    document.body.appendChild(select);
+                }
+
+                // Step 3: Clear any existing options and add a default placeholder
+                select.innerHTML = '<option value="" disabled selected>Select Country</option>';
+
+                // Step 4: Populate the select dropdown with country options
+                countries.forEach((country) => {
+                    const option = document.createElement("option");
+                    option.value = country.name; // Use country name as value
+                    option.textContent = country.name; // Display country name
+                    select.appendChild(option);
+                });
+
+                // Step 5: Add an event listener to capture user selection
+                select.addEventListener("change", (e) => {
+                    console.log("Selected country:", e.target.value);
+                });
+
+            } catch (error) {
+                console.error("Error loading countries:", error);
+            }
+        };
+
+        // Step 6: Automatically load countries when the page loads
+        document.addEventListener("DOMContentLoaded", loadCountries);</code>
           </pre>
                 </div>
             </div>
