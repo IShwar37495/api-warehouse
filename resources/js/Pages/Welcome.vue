@@ -82,11 +82,13 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
                 Empower your applications with our free and powerful API
                 services.
             </p>
-            <button
+            <Link
+            :href="route('register')"
                 class="px-6 py-3 bg-[#FE4D01] text-white rounded-lg text-lg hover:opacity-80"
+
             >
                 Get Started
-            </button>
+        </Link>
         </section>
 
         <!-- Features Grid -->
@@ -118,7 +120,11 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
                 </h2>
                 <div class="p-6 bg-gray-800 rounded-lg">
                     <pre class="overflow-x-auto text-gray-100">
-  <code class="language-javascript">fetch('https://api-hub.com/v1/data')
+  <code class="language-javascript">fetch("https://api-warehouse-production-6639.up.railway.app/api/v1/data", {
+    headers: {
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+})
     .then(response => response.json())
     .then(data => console.log(data));</code>
             </pre>
