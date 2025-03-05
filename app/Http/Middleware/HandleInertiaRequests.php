@@ -37,6 +37,8 @@ class HandleInertiaRequests extends Middleware
                     'id' => $request->user()->id,
                     'name' => $request->user()->name,
                     'isAdmin' => $request->user()->roles()->where('name', 'admin')->exists(),
+                    'profile_photo_url'=>$request->user()->profile_photo_path,
+                    'profile_photo_path'=>$request->user()->profile_photo_path,
                 ] : null,
             ],
             'ziggy' => fn () => [

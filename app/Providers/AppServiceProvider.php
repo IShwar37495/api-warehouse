@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\UserRegistered;
+use App\Listeners\SendRegisteredMail;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
@@ -23,5 +26,10 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
+
+        // Event::listen(
+        //     UserRegistered::class,
+        //     SendRegisteredMail::class,
+        // );
     }
 }
