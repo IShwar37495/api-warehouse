@@ -73,6 +73,9 @@ const clearPhotoFileInput = () => {
         photoInput.value.value = null;
     }
 };
+
+const isModalOpen = ref(false); const selectedImage = ref(''); const openImageModal = (imageUrl) => { selectedImage.value = imageUrl; isModalOpen.value = true; };
+const closeModal = () => { isModalOpen.value = false; };
 </script>
 
 <template>
@@ -102,11 +105,9 @@ const clearPhotoFileInput = () => {
 
                 <!-- Current Profile Photo -->
                 <div v-show="!photoPreview" class="mt-2">
-                    <img
-                        :src="user.profile_photo_url || '/images/default.png'"
-                        :alt="user.name"
-                        class="object-cover rounded-full size-20"
-                    />
+                    <img :src="user.profile_photo_url || '/images/default.png'" :alt="user.name"
+                    class="object-cover rounded-full size-20 cursor-pointer"
+                     @click="openImageModal(user.profile_photo_url || '/images/default.png')" />
                 </div>
 
                 <!-- New Profile Photo Preview -->
@@ -210,4 +211,24 @@ const clearPhotoFileInput = () => {
             </PrimaryButton>
         </template>
     </FormSection>
+
+    <template v-if="isModalOpen">
+    <div
+        class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50"
+        @click.self="closeModal"
+    >
+        <div class="relative p-4 bg-white rounded-lg shadow-lg max-w-3xl">
+            <!-- Close Button -->
+            <button
+                class="absolute top-3 right-3 text-gray-700 hover:text-red-500 text-4xl font-bold"
+                @click="closeModal"
+            >
+                ×
+            </button>
+            <!-- Full-Size Image -->
+            <img :src="selectedImage" class="max-h-[85vh] max-w-full rounded-lg">
+        </div>
+    </div>
+</template>
+
 </template>
