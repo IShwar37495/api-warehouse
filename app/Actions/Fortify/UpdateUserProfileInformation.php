@@ -3,10 +3,13 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
@@ -23,9 +26,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
-        if (isset($input['photo'])) {
-            $user->updateProfilePhoto($input['photo']);
-        }
+        if (isset($input['photo']) && $input['photo'] instanceof UploadedFile) {
+        $this->updateProfilePic($user, $input['photo']);
+    }
 
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
@@ -53,4 +56,22 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         $user->sendEmailVerificationNotification();
     }
+
+
+protected function updateProfilePic(User $user, UploadedFile $file): void
+{
+
+    try {
+        $uploadedImage = Cloudinary::upload($file->getRealPath())->getSecurePath();
+
+
+        $user->update(['profile_photo_path' => $uploadedImage]);
+        $user->save();
+
+    } catch (\Exception $e) {
+
+        Log::error('Profile picture upload failed: ' . $e->getMessage());
+        throw new \Exception('Failed to upload image.');
+    }
+}
 }
