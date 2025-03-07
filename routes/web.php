@@ -53,6 +53,8 @@ Route::middleware(['auth'])->prefix('user')->as('user.')->group(function(){
 
     Route::post('/photo',[UserController::class, "addProfilePic"])->name('addProfilePic');
 
+    Route::get('/chat', [UserController::class, 'showChatPage'])->name('showChatPage');
+
     });
 
 

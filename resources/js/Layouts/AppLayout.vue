@@ -74,6 +74,14 @@ onMounted(() => {
                                 </NavLink>
 
                                 <NavLink
+                                    :href="route('user.showChatPage')"
+                                    class="px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    active-class="text-[#FE4D01] dark:text-[#FE4D01]"
+                                >
+                                    Messages
+                                </NavLink>
+
+                                <NavLink
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                     class="px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"

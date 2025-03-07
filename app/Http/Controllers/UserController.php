@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Container\Attributes\Auth;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -32,4 +33,8 @@ class UserController extends Controller
             return back()->with('error', 'Failed to upload image: ' . $e->getMessage());
         }
     }
+
+public function showChatPage(){
+   return Inertia::render("Chat");
+}
 }
