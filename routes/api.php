@@ -24,8 +24,18 @@ Route::middleware(['auth:sanctum'])->prefix('/v1')->group(function(){
     Route::get('/indian-states', [ApiController::class, "indianStates"])->name('api.indianStates');
 
 
-
+  // countries api routes
     Route::get('/countries',[ApiController::class, "allCountries"])->name('api.allCountries');
+
+    //auth api routes
+
+    Route::post('/register-user', [ApiController::class, 'registerUser'])->name('api.registerUser');
+
+    Route::post('/login-user', [ApiController::class, 'loginUser'])->name('api.loginUser');
+
+    Route::post('/validate-token', [ApiController::class, 'validateToken'])->name('api.validateToken');
+
+    Route::post('/refresh-token', [ApiController::class, 'refreshToken'])->name('api.refreshToken');
 
 });
 

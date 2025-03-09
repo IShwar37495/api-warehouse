@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
                     'profile_photo_path'=>$request->user()->profile_photo_path,
                     'email_verified_at'=>$request->user()->email_verified_at,
                     'email'=>$request->user()->email,
+                    'client_id'=>$request->user()->client_id,
                 ] : null,
             ],
             'ziggy' => fn () => [

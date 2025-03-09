@@ -8,6 +8,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
         'name'=>'Admin',
         'email'=>'ishwarjhokhra2000@gmail.com',
         'password'=>Hash::make('password@123'),
+        'client_id'=>Str::uuid(),
         'email_verified_at'=>now(),
 
       ]);

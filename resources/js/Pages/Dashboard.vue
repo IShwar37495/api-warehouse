@@ -2,9 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Footer from "@/Layouts/Footer.vue";
 import { ref, onMounted } from "vue";
-import { Link } from '@inertiajs/vue3';
-
-
+import { Link } from "@inertiajs/vue3";
 
 const apis = ref([
     {
@@ -16,7 +14,7 @@ const apis = ref([
     {
         name: "User Authentication API",
         description: "Secure user authentication and authorization.",
-        link: "https://example.com/auth-api",
+        link: route("apiPage.authUser"),
         icon: "shield-lock",
     },
     {
@@ -67,80 +65,102 @@ onMounted(() => {
         >
             <!-- Hero Section -->
             <div
-    class="relative py-20 pb-32 overflow-hidden bg-gradient-to-br from-[#FE4D01] via-orange-500 to-orange-400 dark:from-gray-900 dark:via-gray-800 dark:to-[#FE4D01]/20"
->
-    <!-- Improved decorative elements with animation -->
-    <div
-        class="absolute w-72 h-72 rounded-full top-10 -left-16 bg-white/10 blur-3xl dark:bg-[#FE4D01]/10 animate-pulse"
-        style="animation-duration: 8s;"
-    ></div>
-    <div
-        class="absolute rounded-full bottom-5 -right-20 w-96 h-96 bg-white/10 blur-3xl dark:bg-[#FE4D01]/10 animate-pulse"
-        style="animation-duration: 12s;"
-    ></div>
-
-    <div class="max-w-6xl px-4 mx-auto text-center relative z-10">
-        <!-- Logo/Icon (optional) -->
-
-
-        <h1
-            class="mb-6 text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl drop-shadow-md dark:text-white"
-        >
-            <span class="inline-block">API</span>
-            <span class="inline-block bg-white/10 px-4 py-1 rounded-lg mx-2 backdrop-blur-sm dark:bg-[#FE4D01]/20">Warehouse</span>
-        </h1>
-
-        <p
-            class="max-w-2xl mx-auto mb-10 text-xl text-white dark:text-gray-200 leading-relaxed"
-        >
-            Discover and integrate powerful APIs to supercharge your
-            applications with just a few clicks.
-        </p>
-
-        <div class="relative z-10 flex flex-wrap justify-center gap-5">
-            <a
-                href="#apis"
-                class="px-8 py-4 text-[#FE4D01] bg-white rounded-full font-bold transition-all hover:bg-gray-100 hover:shadow-xl hover:-translate-y-1 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-[#FE4D01] dark:border dark:border-gray-600 group"
+                class="relative py-20 pb-32 overflow-hidden bg-gradient-to-br from-[#FE4D01] via-orange-500 to-orange-400 dark:from-gray-900 dark:via-gray-800 dark:to-[#FE4D01]/20"
             >
-                <span class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                    </svg>
-                    Explore APIs
-                </span>
-            </a>
-            <a
-                href="#"
-                class="px-8 py-4 font-bold text-white transition-all border-2 border-white/80 rounded-full hover:bg-white/15 dark:border-[#FE4D01]/80 dark:text-[#FE4D01] dark:hover:bg-[#FE4D01]/10 hover:-translate-y-1 group"
-            >
-                <span class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-                    </svg>
-                    Documentation
-                </span>
-            </a>
-        </div>
-    </div>
+                <!-- Improved decorative elements with animation -->
+                <div
+                    class="absolute w-72 h-72 rounded-full top-10 -left-16 bg-white/10 blur-3xl dark:bg-[#FE4D01]/10 animate-pulse"
+                    style="animation-duration: 8s"
+                ></div>
+                <div
+                    class="absolute rounded-full bottom-5 -right-20 w-96 h-96 bg-white/10 blur-3xl dark:bg-[#FE4D01]/10 animate-pulse"
+                    style="animation-duration: 12s"
+                ></div>
 
-    <!-- Improved Wave Separator with better dark mode support -->
-    <div
-        class="absolute bottom-0 left-0 w-full h-24 overflow-hidden"
-    >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 320"
-            class="w-full h-full"
-            preserveAspectRatio="none"
-        >
-            <path
-                fill-opacity="1"
-                d="M0,96L48,112C96,128,192,160,288,154.7C384,149,480,107,576,96C672,85,768,107,864,138.7C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-                class="fill-white dark:fill-gray-900 transition-colors duration-300"
-            ></path>
-        </svg>
-    </div>
-</div>
+                <div class="relative z-10 max-w-6xl px-4 mx-auto text-center">
+                    <!-- Logo/Icon (optional) -->
+
+                    <h1
+                        class="mb-6 text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl drop-shadow-md dark:text-white"
+                    >
+                        <span class="inline-block">API</span>
+                        <span
+                            class="inline-block bg-white/10 px-4 py-1 rounded-lg mx-2 backdrop-blur-sm dark:bg-[#FE4D01]/20"
+                            >Warehouse</span
+                        >
+                    </h1>
+
+                    <p
+                        class="max-w-2xl mx-auto mb-10 text-xl leading-relaxed text-white dark:text-gray-200"
+                    >
+                        Discover and integrate powerful APIs to supercharge your
+                        applications with just a few clicks.
+                    </p>
+
+                    <div
+                        class="relative z-10 flex flex-wrap justify-center gap-5"
+                    >
+                        <a
+                            href="#apis"
+                            class="px-8 py-4 text-[#FE4D01] bg-white rounded-full font-bold transition-all hover:bg-gray-100 hover:shadow-xl hover:-translate-y-1 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-[#FE4D01] dark:border dark:border-gray-600 group"
+                        >
+                            <span class="flex items-center gap-2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clip-rule="evenodd"
+                                    />
+                                </svg>
+                                Explore APIs
+                            </span>
+                        </a>
+                        <a
+                            href="#"
+                            class="px-8 py-4 font-bold text-white transition-all border-2 border-white/80 rounded-full hover:bg-white/15 dark:border-[#FE4D01]/80 dark:text-[#FE4D01] dark:hover:bg-[#FE4D01]/10 hover:-translate-y-1 group"
+                        >
+                            <span class="flex items-center gap-2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                                        clip-rule="evenodd"
+                                    />
+                                </svg>
+                                Documentation
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Improved Wave Separator with better dark mode support -->
+                <div
+                    class="absolute bottom-0 left-0 w-full h-24 overflow-hidden"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 1440 320"
+                        class="w-full h-full"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            fill-opacity="1"
+                            d="M0,96L48,112C96,128,192,160,288,154.7C384,149,480,107,576,96C672,85,768,107,864,138.7C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+                            class="transition-colors duration-300 fill-white dark:fill-gray-900"
+                        ></path>
+                    </svg>
+                </div>
+            </div>
 
             <!-- API Section -->
             <div id="apis" class="max-w-6xl px-4 mx-auto mt-12">
