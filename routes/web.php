@@ -5,6 +5,7 @@ use App\Http\Controllers\ApiPageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ApiDocsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,11 +33,8 @@ Route::middleware([
 //admin routes-->
 
 Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function(){
-
  Route::get('/create-api', [AdminController::class, 'createApi'])->name('api.create');
-
  Route::post('/store-api', [AdminController::class,'storeApi'])->name('api.store');
-
 });
 
 
@@ -60,10 +58,19 @@ Route::middleware(['auth'])->prefix('user')->as('user.')->group(function(){
 
     });
 
-    //auth routes
-
+//auth routes
 Route::get('auth/google', [SocialAuthController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+
+
+//docs routes
+Route::middleware(['auth'])->prefix('api-docs')->as('api-docs.')->group(function(){
+
+    Route::get('/auth', [ApiDocsController::class, 'authApiDocs'] )->name('auth');
+
+
+
+    });
 
 
 

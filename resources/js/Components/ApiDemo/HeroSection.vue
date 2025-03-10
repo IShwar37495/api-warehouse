@@ -47,7 +47,7 @@
             </svg>
             Get Started
           </a>
-          <a href="/docs" class="px-8 py-4 font-bold text-white transition-all border-2 border-white rounded-full hover:bg-white/10 transform hover:-translate-y-1 flex items-center justify-center gap-2">
+           <a :href="docsUrl" class="px-8 py-4 font-bold text-white transition-all border-2 border-white rounded-full hover:bg-white/10 transform hover:-translate-y-1 flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
             </svg>
@@ -78,3 +78,17 @@
       </div>
     </div>
   </template>
+  <script>
+  export default {
+    props: {
+      docsUrl: {
+        type: String,
+        default: "/#" // Default route if not provided
+      },
+      getStartedUrl: {
+        type: String,
+        default: "#implementation"
+      }
+    }
+  };
+  </script>

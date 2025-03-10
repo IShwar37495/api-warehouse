@@ -1,7 +1,7 @@
 <template>
     <AppLayout title="API Documentation">
         <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-            <HeroSection />
+            <HeroSection docsUrl="/api-docs/auth"/>
             <div class="max-w-6xl px-4 py-12 mx-auto">
                 <ProcessSteps />
                 <AuthenticateSection />

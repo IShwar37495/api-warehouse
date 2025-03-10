@@ -219,6 +219,16 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
 import { Link } from "@inertiajs/vue3";
 
 export default {
+
+    meta: {
+    title: "Home - My Website",
+    meta: [
+      {
+        name: "description",
+        content: "This is the home page of My Website, where you find amazing content!"
+      }
+    ]
+  },
     components: {
         Link,
     },
@@ -320,6 +330,8 @@ export default {
             document.documentElement.classList.remove("dark");
         }
     },
+
+
 };
 </script>
 
