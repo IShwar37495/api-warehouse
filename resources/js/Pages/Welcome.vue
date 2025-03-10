@@ -20,6 +20,7 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
                 <button
                     @click="toggleDarkMode"
                     class="p-2 border rounded-full dark:border-gray-600"
+                    aria-label="toggle-mode"
                 >
                     <svg
                         v-if="isDark"
@@ -67,7 +68,7 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
                     <Link
                         v-if="canRegister"
                         :href="route('register')"
-                        class="px-4 py-2 bg-[#FE4D01] text-white rounded-md hover:opacity-80"
+                        class="px-4 py-2 bg-[#FE4D01] text-[#F5F5F5] rounded-md hover:opacity-80"
                     >
                         Register
                     </Link>
@@ -75,16 +76,16 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
             </div>
         </nav>
         <section class="px-5 py-20 text-center bg-gray-50 dark:bg-gray-900">
-            <h2 class="mb-5 text-5xl font-extrabold dark:text-white">
+            <h1 class="mb-5 text-5xl font-extrabold dark:text-white">
                 Access Free APIs for Developers
-            </h2>
+            </h1>
             <p class="mb-8 text-lg text-gray-600 dark:text-gray-300">
                 Empower your applications with our free and powerful API
                 services.
             </p>
             <Link
             :href="route('register')"
-                class="px-6 py-3 bg-[#FE4D01] text-white rounded-lg text-lg hover:opacity-80"
+                class="px-6 py-3 bg-[#FE4D01] text-[#F5F5F5] rounded-lg text-lg hover:opacity-80"
 
             >
                 Get Started
@@ -102,9 +103,9 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
                     <div class="text-[#FE4D01] text-4xl mb-4">
                         {{ feature.icon }}
                     </div>
-                    <h3 class="mb-2 text-xl font-bold dark:text-white">
+                    <h2 class="mb-2 text-xl font-bold dark:text-white">
                         {{ feature.title }}
-                    </h3>
+                    </h2>
                     <p class="text-gray-600 dark:text-gray-300">
                         {{ feature.description }}
                     </p>
@@ -147,9 +148,9 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
                     <p class="mb-4 italic text-gray-600 dark:text-gray-300">
                         "{{ testimonial.text }}"
                     </p>
-                    <h4 class="font-bold dark:text-white">
+                    <h3 class="font-bold dark:text-white">
                         {{ testimonial.author }}
-                    </h4>
+                    </h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400">
                         {{ testimonial.role }}
                     </p>
