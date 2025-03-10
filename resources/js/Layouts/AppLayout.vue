@@ -45,7 +45,7 @@ onMounted(() => {
                         <div class="flex-shrink-0">
                             <Link :href="route('dashboard')">
                                 <img
-                                    src="/images/image.png"
+                                    src="/images/image.webp"
                                     alt="API Warehouse Logo"
                                     class="object-contain w-32 h-24 -mt-[3.5rem] -mb-4"
                                 />

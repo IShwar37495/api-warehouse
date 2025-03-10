@@ -11,7 +11,7 @@ usePage().props.title = "API Warehouse - Free APIs for Developers";
             class="sticky top-0 z-50 flex items-center justify-between h-20 p-5 bg-white shadow-md dark:bg-gray-800"
         >
             <img
-                src="/images/image.png"
+                src="/images/image.webp"
                 alt="API Warehouse Logo"
                 class="object-contain w-32 h-24 -mt-[3.5rem] -mb-4"
             />
