@@ -23,7 +23,6 @@
         "vue": "^3.3.13"
     },
     "dependencies": {
-        "@vueup/vue-quill": "^1.2.0",
-        "vue-meta": "^2.4.0"
+        "@vueup/vue-quill": "^1.2.0"
     }
 }
