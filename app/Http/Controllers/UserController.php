@@ -3,13 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Response;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Container\Attributes\Auth;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function addProfilePic(Request $request)
+
+
+
+    public function dashboard(Request $request):Response{
+
+      return Inertia::render('Dashboard');
+
+
+    }
+    public function addProfilePic(Request $request):RedirectResponse
     {
         $user = auth()->user();
 
@@ -34,7 +46,7 @@ class UserController extends Controller
         }
     }
 
-public function showChatPage(){
+public function showChatPage():Response{
    return Inertia::render("Chat");
 }
 }

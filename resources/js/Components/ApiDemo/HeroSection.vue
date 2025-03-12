@@ -1,3 +1,19 @@
+<script setup>
+import { Link } from "@inertiajs/vue3";
+
+const props = defineProps({
+  docsUrl: {
+    type: String,
+    default: "/#",
+  },
+  getStartedUrl: {
+    type: String,
+    default: "#implementation",
+  },
+});
+</script>
+
+
 <template>
     <div class="relative py-20 overflow-hidden bg-gradient-to-br from-[#FE4D01] via-orange-500 to-amber-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
       <!-- Animated background elements -->
@@ -41,18 +57,18 @@
 
         <!-- Enhanced call-to-action buttons -->
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-          <a href="#implementation" class="px-8 py-4 text-[#FE4D01] bg-white rounded-full font-bold transition-all hover:bg-gray-100 hover:shadow-lg transform hover:-translate-y-1 flex items-center justify-center gap-2">
+          <a href= "#implementation" class="px-8 py-4 text-[#FE4D01] bg-white rounded-full font-bold transition-all hover:bg-gray-100 hover:shadow-lg transform hover:-translate-y-1 flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
             Get Started
-          </a>
-           <a :href="docsUrl" class="px-8 py-4 font-bold text-white transition-all border-2 border-white rounded-full hover:bg-white/10 transform hover:-translate-y-1 flex items-center justify-center gap-2">
+        </a>
+           <Link  :href="docsUrl" class="px-8 py-4 font-bold text-white transition-all border-2 border-white rounded-full hover:bg-white/10 transform hover:-translate-y-1 flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
             </svg>
             Full Documentation
-          </a>
+        </Link>
         </div>
       </div>
 
@@ -78,17 +94,4 @@
       </div>
     </div>
   </template>
-  <script>
-  export default {
-    props: {
-      docsUrl: {
-        type: String,
-        default: "/#" // Default route if not provided
-      },
-      getStartedUrl: {
-        type: String,
-        default: "#implementation"
-      }
-    }
-  };
-  </script>
+
