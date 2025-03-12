@@ -3,9 +3,15 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -27,6 +33,28 @@ class JetstreamServiceProvider extends ServiceProvider
         Jetstream::deleteUsersUsing(DeleteUser::class);
 
         Vite::prefetch(concurrency: 3);
+
+
+        Fortify::authenticateUsing(function (Request $request){
+
+            $user = User::where('email', $request->email)->first();
+
+            if ($user &&
+            Hash::check($request->password, $user->password)) {
+
+                $accessToken = $user->generateAccessToken($user->id);
+                $refreshToken = $user->generateRefreshToken($user->id);
+
+                DB::table('refresh_tokens')->where('user_id', $user->id)->delete();
+                DB::table('refresh_tokens')->insert([
+                    'user_id' => $user->id,
+                    'token' => $refreshToken,
+                    'expires_at' => Carbon::now()->addDays(7),
+                ]);
+            return $user;
+        }
+
+        });
     }
 
     /**

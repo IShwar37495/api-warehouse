@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -88,6 +91,28 @@ public function roles()
     if ($role) {
         $this->roles()->attach($role->id);
     }
+}
+
+public  function generateAccessToken($userId)
+{
+    $payload = [
+        'sub' => $userId,
+        'iat' => Carbon::now()->timestamp,
+        'exp' => Carbon::now()->addMinutes(60)->timestamp,
+    ];
+
+    return JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+}
+
+public function generateRefreshToken($userId)
+{
+    $payload = [
+        'sub' => $userId,
+        'iat' => Carbon::now()->timestamp,
+        'exp' => Carbon::now()->addDays(15)->timestamp,
+    ];
+
+    return JWT::encode($payload, env('JWT_SECRET'), 'HS256');
 }
 
 }
