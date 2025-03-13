@@ -12,6 +12,7 @@ use Laravel\Jetstream\Jetstream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cookie;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -51,6 +52,35 @@ class JetstreamServiceProvider extends ServiceProvider
                     'token' => $refreshToken,
                     'expires_at' => Carbon::now()->addDays(7),
                 ]);
+
+                Cookie::queue(
+                    'access_token',
+                    $accessToken,
+                    30, // Expires in 15 minutes
+                    '/',
+                    null,
+                    true, // Secure (Set to false for local testing)
+                    true  // HTTP-only (Not accessible via JavaScript)
+                );
+
+                // Set Refresh Token (Long-lived, 7 days)
+                Cookie::queue(
+                    'refresh_token',
+                    $refreshToken,
+                    7 * 24 * 60, // Expires in 7 days
+                    '/',
+                    null,
+                    true, // Secure
+                    true  // HTTP-only
+                );
+
+
+
+
+
+
+
+
             return $user;
         }
 
