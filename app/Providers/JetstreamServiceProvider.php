@@ -73,14 +73,6 @@ class JetstreamServiceProvider extends ServiceProvider
                     true, // Secure
                     true  // HTTP-only
                 );
-
-
-
-
-
-
-
-
             return $user;
         }
 
