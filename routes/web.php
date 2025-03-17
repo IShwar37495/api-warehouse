@@ -41,9 +41,7 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function(){
 
 
 Route::middleware(['auth'])->prefix('api-page')->as('apiPage.')->group(function(){
-
 Route::get('/countries',[ApiPageController::class, "allcountriesApiPageDemo"])->name('countries');
-
 Route::get('/auth-user', [ApiPageController::class, 'authUserApiPageDemo'])->name('authUser');
 
 });
@@ -55,9 +53,11 @@ Route::middleware(['auth'])->prefix('user')->as('user.')->group(function(){
 
     Route::get('/chat', [UserController::class, 'showChatPage'])->name('showChatPage');
 
+    Route::get('chat/auth/token/', [UserController::class, 'sendAccessToken'])->name('sendAccessToken');
+
     });
 
-//auth routes
+// google-auth routes
 Route::get('auth/google', [SocialAuthController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 

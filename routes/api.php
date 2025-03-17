@@ -30,11 +30,8 @@ Route::middleware(['auth:sanctum'])->prefix('/v1')->group(function(){
     //auth api routes
 
     Route::post('/register-user', [ApiController::class, 'registerUser'])->name('api.registerUser');
-
     Route::post('/login-user', [ApiController::class, 'loginUser'])->name('api.loginUser');
-
     Route::post('/validate-token', [ApiController::class, 'validateToken'])->name('api.validateToken');
-
     Route::post('/refresh-token', [ApiController::class, 'refreshToken'])->name('api.refreshToken');
 
 });
