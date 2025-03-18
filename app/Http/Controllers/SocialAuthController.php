@@ -59,3 +59,4 @@ class SocialAuthController extends Controller
 
         return redirect('/dashboard');
 }
+}
