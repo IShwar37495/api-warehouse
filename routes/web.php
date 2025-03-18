@@ -55,6 +55,8 @@ Route::middleware(['auth'])->prefix('user')->as('user.')->group(function(){
 
     Route::get('chat/auth/token/', [UserController::class, 'sendAccessToken'])->name('sendAccessToken');
 
+    Route::get('/search/users', [UserController::class, 'SearchUsers'])->name('searchUsers');
+
     });
 
 // google-auth routes
