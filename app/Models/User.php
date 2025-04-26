@@ -115,4 +115,10 @@ public function generateRefreshToken($userId)
     return JWT::encode($payload, env('JWT_SECRET'), 'HS256');
 }
 
+public function chats()
+{
+    return $this->belongsToMany(Chat::class);
+}
+
+
 }

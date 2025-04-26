@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiPageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ApiDocsController;
@@ -70,6 +71,38 @@ Route::middleware(['auth'])->prefix('api-docs')->as('api-docs.')->group(function
 
 
     });
+
+
+
+// Message routes
+Route::middleware(['auth'])->group(function () {
+    // Get all chats for the current user
+    Route::get('/chats', [ChatController::class, 'getChats'])->name('messages.getChats');
+
+    // Get messages for a specific chat
+    Route::get('/chats/{chatId}/messages', [ChatController::class, 'getMessages'])->name('messages.getMessages');
+
+    // Search for users
+    Route::get('/chats/search-users', [ChatController::class, 'searchUsers'])->name('messages.searchUsers');
+
+    // Start or get a chat with a user
+    Route::post('/chats/start', [ChatController::class, 'startChat'])->name('messages.startChat');
+
+    // Send a message
+    Route::post('/messages/send', [ChatController::class, 'send'])->name('messages.send');
+
+    // Mark messages as seen
+    Route::post('/chats/{chatId}/mark-seen', [ChatController::class, 'markAsSeen'])->name('messages.markAsSeen');
+
+    // Create a group chat
+    Route::post('/chats/create-group', [ChatController::class, 'createGroupChat'])->name('messages.createGroup');
+
+    // Delete a message
+    Route::delete('/messages/{messageId}', [ChatController::class, 'deleteMessage'])->name('messages.delete');
+
+    // Get chat information
+    Route::get('/chats/{chatId}/info', [ChatController::class, 'getChatInfo'])->name('messages.chatInfo');
+});
 
 
 
