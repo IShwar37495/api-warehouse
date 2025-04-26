@@ -93,8 +93,8 @@ public function sendAccessToken(Request $request)
         if (!$user) {
             return ApiResponse::error('User not found', 404);
         }
-        $newAccessToken = $user->generateAccessToken();
-        $newRefreshToken = $user->generateRefreshToken();
+        $newAccessToken = $user->generateAccessToken($user->id);
+        $newRefreshToken = $user->generateRefreshToken($user->id);
 
 
         Cookie::queue(
@@ -124,6 +124,18 @@ public function sendAccessToken(Request $request)
     } catch (\Exception $e) {
         return ApiResponse::error('Invalid refresh token', 401);
     }
+}
+
+
+public function SearchUsers(Request $request)
+{
+    $query = $request->input('query');
+
+    $users = User::where('name', 'like', "%{$query}%")
+                 ->orWhere('email', 'like', "%{$query}%")
+                 ->get();
+
+    return response()->json($users);
 }
 
 }
