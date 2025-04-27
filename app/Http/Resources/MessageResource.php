@@ -30,6 +30,7 @@ class MessageResource extends JsonResource
             $data['sender'] = [
                 'id' => $this->sender->id,
                 'name' => $this->sender->name,
+                'email' => $this->sender->email,
             ];
         }
 
@@ -38,7 +39,12 @@ class MessageResource extends JsonResource
             $data['file_name'] = $this->file_name;
             $data['file_size'] = $this->file_size;
             $data['file_type'] = $this->file_type;
-            $data['file_url'] = url(Storage::url($this->file_path));
+            $data['file_url'] = $this->file_url;
+
+            // Add optimized image URL for images
+            if ($this->type === 'image' && $this->file_url) {
+                $data['thumbnail_url'] = str_replace('/upload/', '/upload/w_300,h_300,c_fill/', $this->file_url);
+            }
         }
 
         // Add message status

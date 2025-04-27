@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ChatController extends Controller
 {
@@ -73,10 +74,11 @@ class ChatController extends Controller
             return ApiResponse::error('Unauthorized access', 403);
         }
 
+        // Get messages with pagination
         $messages = Message::where('chat_id', $chatId)
             ->with(['messageStatuses', 'sender'])
-            ->orderBy('created_at')
-            ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
         return ApiResponse::success(MessageResource::collection($messages));
     }
@@ -177,16 +179,19 @@ class ChatController extends Controller
             if ($request->type === 'text') {
                 $messageData['message'] = $request->message;
             } else {
-                // Handle file upload
+                // Handle file upload to Cloudinary
                 $file = $request->file('file');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('chat-files', $fileName, 'public');
+                $uploadResult = Cloudinary::upload($file->getRealPath(), [
+                    'folder' => 'chat_files',
+                    'resource_type' => $request->type === 'image' ? 'image' : 'raw'
+                ]);
 
-                $messageData['message'] = $fileName;
-                $messageData['file_path'] = $filePath;
+                $messageData['message'] = $file->getClientOriginalName();
+                $messageData['file_url'] = $uploadResult->getSecurePath();
                 $messageData['file_name'] = $file->getClientOriginalName();
                 $messageData['file_size'] = $file->getSize();
                 $messageData['file_type'] = $file->getMimeType();
+                $messageData['cloudinary_id'] = $uploadResult->getPublicId();
             }
 
             $message = Message::create($messageData);
@@ -198,13 +203,8 @@ class ChatController extends Controller
                 'status' => 'sent',
             ]);
 
-            // Add file URL for frontend
-            if ($request->type !== 'text') {
-                $message->file_url = url(Storage::url($message->file_path));
-            }
-
             // Load relationships for response
-            $message->load('messageStatuses');
+            $message->load('messageStatuses', 'sender');
 
             DB::commit();
 

@@ -3,6 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
+import { useVirtualList } from "@vueuse/core";
 
 // Utility function for debouncing function calls
 const debounce = (fn, delay) => {
@@ -36,6 +37,21 @@ const showChatList = ref(true);
 const imageViewerUrl = ref(null); // For image viewer modal
 const refreshInterval = ref(null); // For periodic refresh fallback
 const isDarkMode = ref(localStorage.getItem("theme") === "dark"); // Dark mode state
+const messagesContainer = ref(null);
+
+// Computed properties
+const sortedMessages = computed(() => {
+    return [...messages.value].sort((a, b) => {
+        return new Date(a.created_at) - new Date(b.created_at);
+    });
+});
+
+// Virtual list setup with adjusted configuration
+const { list: virtualMessages } = useVirtualList(sortedMessages, {
+    itemHeight: 60,
+    containerRef: messagesContainer,
+    overscan: 10, // Show more items above and below the viewport
+});
 
 // Watch for window resize to handle responsive layout
 window.addEventListener("resize", () => {
@@ -151,12 +167,6 @@ function refreshMessages() {
 
 // Open chat and load messages
 function openChat(chatId, userId) {
-    // Clear any existing refresh interval
-    if (refreshInterval.value) {
-        clearInterval(refreshInterval.value);
-        refreshInterval.value = null;
-    }
-
     selectedChatId.value = chatId;
     selectedUserId.value = userId;
     loading.value = true;
@@ -177,8 +187,10 @@ function openChat(chatId, userId) {
             // Mark messages as seen
             markAsSeen(chatId);
 
-            // Scroll to bottom of messages
-            scrollToBottom();
+            // Scroll to bottom after a short delay to ensure DOM is updated
+            setTimeout(() => {
+                scrollToBottom();
+            }, 100);
 
             // Set up a fallback refresh interval (every 10 seconds)
             refreshInterval.value = setInterval(refreshMessages, 10000);
@@ -310,7 +322,27 @@ function clearAttachment() {
     }
 }
 
-// Send message (text or file)
+// Optimize scroll behavior
+function scrollToBottom(smooth = false) {
+    if (!messagesContainer.value) return;
+
+    requestAnimationFrame(() => {
+        const container = messagesContainer.value;
+        const scrollHeight = container.scrollHeight;
+        const clientHeight = container.clientHeight;
+
+        if (smooth) {
+            container.scrollTo({
+                top: scrollHeight - clientHeight,
+                behavior: "smooth",
+            });
+        } else {
+            container.scrollTop = scrollHeight - clientHeight;
+        }
+    });
+}
+
+// Optimize message sending
 function sendMessage() {
     if (
         (!newMessage.value.trim() && !selectedFile.value) ||
@@ -333,6 +365,27 @@ function sendMessage() {
         formData.append("type", "text");
     }
 
+    // Optimistically add message to UI
+    const optimisticMessage = {
+        id: Date.now(), // Temporary ID
+        message: newMessage.value,
+        sender_id: page.props.auth.user.id,
+        created_at: new Date().toISOString(),
+        type: selectedFile.value
+            ? selectedFile.value.type.startsWith("image/")
+                ? "image"
+                : "file"
+            : "text",
+        status: "sending",
+    };
+
+    messages.value.push(optimisticMessage);
+    newMessage.value = "";
+    clearAttachment();
+
+    // Scroll to bottom immediately
+    scrollToBottom(true);
+
     axios
         .post(route("messages.send"), formData, {
             headers: {
@@ -340,13 +393,15 @@ function sendMessage() {
             },
         })
         .then((response) => {
-            // Add the new message to the list
-            messages.value.push(response.data.message);
-            newMessage.value = "";
-            clearAttachment();
-
-            // Scroll to bottom of messages with smooth animation
-            scrollToBottom(true);
+            // Replace optimistic message with real one
+            const index = messages.value.findIndex(
+                (m) => m.id === optimisticMessage.id
+            );
+            if (index !== -1) {
+                messages.value[index] = response.data.message;
+            } else {
+                messages.value.push(response.data.message);
+            }
 
             // Update the latest message in the chat list
             const chatIndex = chats.value.findIndex(
@@ -358,36 +413,14 @@ function sendMessage() {
         })
         .catch((error) => {
             console.error("Error sending message:", error);
-        });
-}
-
-// Check if user is at the bottom of the messages container
-function isAtBottom() {
-    const container = document.querySelector(".messages-container");
-    if (!container) return true;
-
-    const threshold = 100; // pixels from bottom to consider "at bottom"
-    return (
-        container.scrollHeight - container.scrollTop - container.clientHeight <
-        threshold
-    );
-}
-
-// Optimized scroll to bottom function
-function scrollToBottom(smooth = false) {
-    requestAnimationFrame(() => {
-        const container = document.querySelector(".messages-container");
-        if (container) {
-            if (smooth) {
-                container.scrollTo({
-                    top: container.scrollHeight,
-                    behavior: "smooth",
-                });
-            } else {
-                container.scrollTop = container.scrollHeight;
+            // Remove optimistic message on error
+            const index = messages.value.findIndex(
+                (m) => m.id === optimisticMessage.id
+            );
+            if (index !== -1) {
+                messages.value.splice(index, 1);
             }
-        }
-    });
+        });
 }
 
 // Setup Echo listeners for real-time updates
@@ -604,68 +637,39 @@ function setupEchoListeners() {
                 </div>
 
                 <template v-else>
-                    <!-- Chat header -->
-                    <div class="chat-header">
-                        <div class="flex items-center">
+                    <!-- Mobile header -->
+                    <div class="mobile-header" v-if="isMobile">
+                        <div class="mobile-header-content">
                             <button
-                                v-if="isMobile"
                                 @click="backToList"
-                                class="back-button"
+                                class="mobile-back-button"
                             >
-                                &larr;
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-6 h-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 19l-7-7 7-7"
+                                    />
+                                </svg>
                             </button>
-                            <div
-                                class="chat-recipient"
-                                v-if="
-                                    chats.find((c) => c.id === selectedChatId)
-                                "
-                            >
+                            <div class="mobile-recipient-name">
                                 {{
                                     chats.find((c) => c.id === selectedChatId)
-                                        .other_user.name
+                                        ?.other_user.name
                                 }}
                             </div>
                         </div>
-
-                        <!-- Dark mode toggle -->
-                        <button
-                            @click="toggleDarkMode"
-                            class="dark-mode-toggle"
-                            aria-label="Toggle dark mode"
-                        >
-                            <svg
-                                v-if="isDarkMode"
-                                class="w-5 h-5 text-yellow-400"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M12 3v1m0 16v1m-8-8H3m16 0h1m-2.636 5.364l-.707-.707m-9.9 0l-.707.707M4.636 6.364l.707-.707m12.728 0l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z"
-                                />
-                            </svg>
-                            <svg
-                                v-else
-                                class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M20.354 15.354A9 9 0 118.646 3.646 7 7 0 1020.354 15.354z"
-                                />
-                            </svg>
-                        </button>
                     </div>
 
                     <!-- Messages display -->
-                    <div class="messages-container">
+                    <div class="messages-container" ref="messagesContainer">
                         <div v-if="loading" class="loading-messages">
                             Loading messages...
                         </div>
@@ -677,7 +681,7 @@ function setupEchoListeners() {
                         </div>
                         <template v-else>
                             <div
-                                v-for="message in messages"
+                                v-for="message in sortedMessages"
                                 :key="message.id"
                                 :class="[
                                     'message',
@@ -705,6 +709,7 @@ function setupEchoListeners() {
                                             :src="message.file_url"
                                             alt="Image"
                                             @click="openImage(message.file_url)"
+                                            loading="lazy"
                                         />
                                     </div>
 
@@ -1095,13 +1100,13 @@ function setupEchoListeners() {
     flex-direction: column;
     gap: 8px;
     background-color: var(--bg-secondary);
-    will-change: transform; /* Optimize scrolling performance */
-    overscroll-behavior: contain; /* Prevent scroll chaining */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    height: calc(100% - 120px); /* Fixed height calculation */
-    min-height: 200px; /* Minimum height to ensure visibility */
-    scrollbar-width: thin; /* Thinner scrollbar for Firefox */
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* Scrollbar color for Firefox */
+    will-change: transform;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    height: calc(100% - 120px);
+    min-height: 200px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 /* Webkit scrollbar styling */
@@ -1122,6 +1127,8 @@ function setupEchoListeners() {
     max-width: 70%;
     margin-bottom: 8px;
     position: relative;
+    contain: content;
+    will-change: transform;
 }
 
 .message.sent {
@@ -1137,6 +1144,7 @@ function setupEchoListeners() {
     border-radius: 16px;
     position: relative;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    contain: content;
 }
 
 .message.sent .message-content {
@@ -1355,12 +1363,137 @@ function setupEchoListeners() {
     cursor: pointer;
 }
 
-/* Media queries for mobile responsiveness */
+/* Mobile header styles */
+.mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--bg-light);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+    display: none;
+}
+
+.mobile-header-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 16px;
+}
+
+.mobile-back-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0;
+}
+
+.mobile-recipient-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+/* Mobile view adjustments */
 @media (max-width: 767px) {
     .chat-container {
         margin: 0;
         height: 100vh;
         border-radius: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--bg-light);
+    }
+
+    .mobile-header {
+        display: block;
+    }
+
+    .message-area {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-top: 60px; /* Space for fixed header */
+    }
+
+    .messages-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        height: calc(100% - 180px); /* Adjusted for header and input */
+        min-height: 0;
+        background-color: var(--bg-secondary);
+    }
+
+    .message-input-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-light);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 100;
+    }
+
+    .message-input-container input[type="text"] {
+        flex: 1;
+        padding: 10px 16px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        background-color: #f5f5f5;
+        font-size: 14px;
+        outline: none;
+        min-height: 40px;
+    }
+
+    .send-button {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: var(--text-light);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .attachment-button {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+        cursor: pointer;
+        flex-shrink: 0;
     }
 
     .message {
@@ -1371,6 +1504,54 @@ function setupEchoListeners() {
         max-width: 200px;
         max-height: 200px;
     }
+
+    /* Dark mode adjustments for mobile */
+    :root.dark .chat-container {
+        background-color: #1a1a1a;
+    }
+
+    :root.dark .chat-header {
+        background-color: #1a1a1a;
+        border-color: #333;
+    }
+
+    :root.dark .chat-recipient {
+        color: var(--text-light);
+    }
+
+    :root.dark .back-button {
+        color: var(--primary-color);
+    }
+
+    :root.dark .mobile-header {
+        background-color: #1a1a1a;
+        border-color: #333;
+    }
+
+    :root.dark .mobile-recipient-name {
+        color: var(--text-light);
+    }
+
+    :root.dark .mobile-back-button {
+        color: var(--primary-color);
+    }
+}
+
+/* Dark mode adjustments for mobile */
+:root.dark .chat-header {
+    background-color: #1a1a1a;
+    border-color: #333;
+}
+
+:root.dark .message-input-container {
+    background-color: #1a1a1a;
+    border-color: #333;
+}
+
+:root.dark .message-input-container input[type="text"] {
+    background-color: #2d2d2d;
+    color: var(--text-light);
+    border-color: #3d3d3d;
 }
 
 /* Image viewer modal */
